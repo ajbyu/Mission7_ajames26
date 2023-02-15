@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Movie Entered";
+}
+
+@model Movie 
+
+<div class="text-center">
+    <h2>Movie Entered</h2>
+
+    <div class="fadeobject">
+        <div> Added @Model.Title to the database.</div>
+        <br /><br />
+        <img src="~/img/checkmark.gif" width="100px"/>
+        <br /><br />
+        <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Home</a>
+        <br />
+        <a class="btn btn-primary" asp-controller="Home" asp-action="EnterMovie">Add Another</a>
+    </div>
+</div>
