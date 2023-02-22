@@ -3,7 +3,7 @@
     ViewData["Title"] = "EnterMovie";
 }
 
-@model Mission6_ajames26.Models.Movie
+@model Mission7_ajames26.Models.Movie
 
 <h1>Enter Movie</h1>
 
@@ -11,28 +11,40 @@
 <hr />
 <div class="row">
     <div class="col-md-4 fadeobject">
-        <form asp-action="EnterMovie">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <input asp-for="Id" hidden />
+
             <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
+                <label asp-for="MovieCategoryId" class="control-label">Movie Category</label>
+                <select asp-for="MovieCategoryId" class="form-control" >
+                    @foreach (var c in ViewBag.MovieCategories)
+                    {
+                        <option value=@c.Id>@c.CategoryName</option>
+                    }
+                </select>
+                <span asp-validation-for="MovieCategoryId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
                 <input asp-for="Year" class="form-control" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Director" class="control-label"></label>
                 <input asp-for="Director" class="form-control" />
                 <span asp-validation-for="Director" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
                 <select asp-for="Rating" class="form-control">
@@ -43,23 +55,27 @@
                 </select>
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Edited" class="control-label">Edited: </label>
                 <input type="checkbox" asp-for="Edited" />
                 <span asp-validation-for="Edited" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="LentTo" class="control-label">Lent To</label>
                 <input asp-for="LentTo" class="form-control" />
                 <span asp-validation-for="LentTo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
                 <input asp-for="Notes" class="form-control" />
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -68,7 +84,3 @@
 <div>
     <a asp-action="Index">Back Home</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

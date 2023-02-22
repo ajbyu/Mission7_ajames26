@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mission7_ajames26.Models;
 
-namespace Mission6_ajames26.Models
+namespace Mission7_ajames26.Models
 {
     public class MovieContext : DbContext
     {
@@ -10,9 +11,30 @@ namespace Mission6_ajames26.Models
         }
 
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<MovieCategory> MovieCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<MovieCategory>()
+                .HasData
+                (
+                    new MovieCategory
+                    {
+                        Id = 1,
+                        CategoryName = "Action"
+                    },
+                    new MovieCategory
+                    {
+                        Id = 2,
+                        CategoryName = "Action/Adventure"
+                    },
+                    new MovieCategory
+                    {
+                        Id = 3,
+                        CategoryName = "Action/Comedy"
+                    }
+                );
+
             modelBuilder.Entity<Movie>()
                 .HasData
                 (
@@ -20,7 +42,7 @@ namespace Mission6_ajames26.Models
                     {
                         Id = 1,
                         Title = "The Spy Next Door",
-                        Category = "Action/Comedy",
+                        MovieCategoryId = 3,
                         Year = 2010,
                         Director = "Brian Levant",
                         Rating = "PG",
@@ -30,7 +52,7 @@ namespace Mission6_ajames26.Models
                     {
                         Id = 2,
                         Title = "John Wick",
-                        Category = "Action",
+                        MovieCategoryId = 1,
                         Year = 2014,
                         Director = "Chad Stahelski",
                         Rating = "R",
@@ -40,7 +62,7 @@ namespace Mission6_ajames26.Models
                     {
                         Id = 3,
                         Title = "Raiders of the Lost Ark",
-                        Category = "Action/Adventure",
+                        MovieCategoryId = 2,
                         Year = 1981,
                         Director = "Steven Spielberg",
                         Rating = "PG",

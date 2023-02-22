@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Mission6_ajames26.Models;
+using Mission7_ajames26.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mission6_ajames26.Controllers
+namespace Mission7_ajames26.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly MovieContext _context;
 
-        public HomeController(ILogger<HomeController> logger, MovieContext context)
+        public HomeController(MovieContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
@@ -33,28 +32,74 @@ namespace Mission6_ajames26.Controllers
         [HttpGet]
         public IActionResult EnterMovie()
         {
-            return View();
+            ViewBag.MovieCategories =  _context.MovieCategories.ToList();
+
+            return View(new Movie());
         }
 
         [HttpPost]
         public IActionResult EnterMovie(Movie movie)
         {
-            _context.Add(movie);
-            _context.SaveChanges();
-            return View("Confirmation", movie);
+            ViewBag.MovieCategories = _context.MovieCategories.ToList();
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(movie);
+                _context.SaveChanges();
+                return View("Confirmation", movie);
+            }
+            else
+            {
+                return View(movie);
+            }
+
+            
         }
 
         [HttpGet]
-        public IActionResult ViewMovies()
+        public async Task<IActionResult> ViewMovies()
         {
-            var movies = _context.Movies;
+            var movies = await _context
+                .Movies
+                .Include(m => m.MovieCategory)
+                .ToListAsync();
             return View(movies);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpGet]
+        public IActionResult EditMovie(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewBag.MovieCategories = _context.MovieCategories.ToList();
+
+            var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+
+            return View("EnterMovie", movie);
+        }
+
+        [HttpPost]
+        public IActionResult EditMovie(Movie movie)
+        {
+            _context.Update(movie);
+            _context.SaveChanges();
+
+            return RedirectToAction("ViewMovies");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteMovie(int id)
+        {
+            var movie = _context.Movies.Single(m => m.Id == id);
+
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMovie(Movie movie)
+        {
+            _context.Remove(movie);
+            _context.SaveChanges();
+
+            return RedirectToAction("ViewMovies");
         }
     }
 }

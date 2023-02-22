@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mission6_ajames26.Models;
+using Mission7_ajames26.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mission6_ajames26
+namespace Mission7_ajames26
 {
     public class Startup
     {

@@ -2,7 +2,7 @@
 
 namespace Mission7_ajames26.Models
 {
-    public class Category
+    public class MovieCategory
     {
         [Key]
         [Required]
